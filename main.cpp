@@ -22,7 +22,7 @@ DigitalIn button1(p16);
 DigitalIn button2(p15);
 
 // declare led outputs (initializes ports to GPIO OUTPUT)
-BusOut leds(p17, p18, p19, p20, p21, p22, p23, p24, p25, p26);
+BusOut leds(p17, p18, p19, p20, p26, p25, p24, p23, p22, p21);
 
 // declare sign flag
 int FLAG = 1;
@@ -182,11 +182,11 @@ int main() {
                     mode = change_mode(mode);           // Change conversion mode
                     value = 0;                          // Reinitialize value and bit to 0
                     bit = 0;
-                    leds = 677;                         // 677 = binary value 1010100101 // Confirmation of mode change blink
+                    leds = 341;                         // 341 = binary value 0101010101 // Confirmation of mode change blink
                     wait(0.2);
-                    leds = 346;                         // 346 = binary value 0101011010
+                    leds = 682;                         // 682 = binary value 1010101010
                     wait(0.2);
-                    leds = 677;                         // 341 = binary value 1010100101
+                    leds = 341;                         // 341 = binary value 0101010101
                     wait(0.2);
                     leds = 0;                           // All OFF
                     while(button2);                     // Wait until button2 is no longer being pressed to proceed
@@ -197,6 +197,11 @@ int main() {
             if (mode == 0) {                                // If decimal to binary mode
                 value = value*FLAG;                         // Apply sign to value
                 dec_to_bin(value);                          // Convert decimal to binary and display in LEDs
+                wait(0.2);                                  // Wait for button debounce
+                while(button2);                             // If button2 is still being held down, wait
+                while(!button2);                            // Wait until button2 is pressed again
+                leds = 0;                                   // All OFF
+                break;                                      // END
             } else {                                        // If binary to decimal mode
                 if (FLAG == -1) {                           // If negative
                     int minus = 0;
@@ -208,29 +213,39 @@ int main() {
                 }
                 if (value < 0) {
                     value = -1*value;                       // Make value positive
-                    leds = 16;                              // Light up leftmost LED as negative sign
+                    leds = 512;                             // Light up leftmost LED as negative sign
                     wait(1);
                     leds = 0;                               // All OFF
                     wait(0.2);
                 }
                 double length = 0;                          // length = # of digits in value (decimal format)
-                for (double i = 0; pow(10, i) < value; i++) {
+                for (double i = 0; pow(10, i) <= value; i++) {
                     length++;                               // Add 1 to length for every power of 10 less than value (i.e. 1, 10, 100)
                 }
-                while (value > 0) {
-                    int leftmost = 0;                       // leftmost = the leftmost digit of value (decimal format)
+                int leftmost = 0;                           // leftmost = the leftmost digit of value (decimal format)
+                while (value > 0 || length > 0) {
+                    if (value == 0 && length > 0) {         // Check if there are any trailing zeroes
+                        bin_to_dec(10);                     // Display zero as all LEDs ON
+                        length--;
+                        goto move_forward;                  // Jump to end of while loop (reuses functionality code)
+                    }
+                    leftmost = 0;                           // Reset leftmost
                     while (value >= pow(10, length-1)) {
                         value -= pow(10, length-1);
                         leftmost++;                         // Add 1 to leftmost for every pow(10, length-1) in value
                     }
                     length--;                               // Now that the leftmost digit of value is gone, subtract 1 from length
+                    if (leftmost == 0)                      // Display zero as all LEDs ON
+                        leftmost = 10;
                     bin_to_dec(leftmost);                   // Display the leftmost digit on LEDs
-                    wait(1);
+                    move_forward:
+                    wait(0.2);                              // Wait for button debounce
+                    while(button2);                         // If button2 is still being held down, wait
+                    while(!button2);                        // When button2 is pressed again, continue
                     leds = 0;                               // All OFF
-                    wait(0.2);
+                    wait(0.1);
                 }
             }
-            break;
         }
     }
 }
