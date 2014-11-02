@@ -1,0 +1,9 @@
+v1.0
+Added decimal to binary conversion.
+Added binary to decimal conversion.
+
+v1.1
+Fixed bug which did not display trailing 0's in binary to decimal conversion.
+Added functionality to end running program after conversion.
+Added functionality to control how long each digit was displayed in binary to
+decimal conversion.
