@@ -238,7 +238,7 @@ int main() {
                     if (leftmost == 0)                      // Display zero as all LEDs ON
                         leftmost = 10;
                     bin_to_dec(leftmost);                   // Display the leftmost digit on LEDs
-                    move_forward:
+                move_forward:                               // Called from line 230 goto
                     wait(0.2);                              // Wait for button debounce
                     while(button2);                         // If button2 is still being held down, wait
                     while(!button2);                        // When button2 is pressed again, continue
