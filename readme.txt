@@ -25,9 +25,9 @@ How it works:
 2. Turn one switch ON and press button1 to store the first value. Turn switch OFF and turn ON another switch and press button1 to store the second value. For example: To input 235 in decimal to binary mode, turn ON switch 2, press button1, turn OFF switch 2, turn ON switch 3, press button1, turn OFF switch 3, turn ON switch 5, press button1, turn OFF switch 5.
 
 3. Run the conversion program by pressing button2.
-	a. For the binary to decimal conversion, the decimal is displayed digit by digit on the LEDs. For example, 305 would be displayed by lighting up the 3 lowest lights first (pins 17, 18, 19). The program then waits for the user to press button2 again, where it then lights up all 10 LEDs (to represent 0). The program then waits for the user to press button2 again, where it then lights up the 5 lowest lights (pins 17, 18, 19, 20, 21). The program then waits for the user to press button2 again, where it exits.
+	a. For the binary to decimal conversion, the decimal is displayed digit by digit on the LEDs. For example, 305 would be displayed by lighting up the 3 lowest lights first (pins 17, 18, 19). The program then waits for the user to press button2 again, where it then lights up all 10 LEDs (to represent 0). The program then waits for the user to press button2 again, where it then lights up the 5 lowest lights (pins 17, 18, 19, 20, 21). The program then waits for the user to press button2 again, where it resets.
 
-4. Press the board reset button to restart the program.
+4. Repeat from step 1.
 
 Syntax tips:
 
